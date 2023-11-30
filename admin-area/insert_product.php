@@ -1,44 +1,50 @@
 <?php
 include('../includes/connect.php');
-if(isset($_POST['insert_product'])){
+if (isset($_POST['insert_product'])) {
 
 
-          $product_title=$_POST['product_title'];
-          $product_description=$_POST['description'];
-          $product_keywords=$_POST['product_keywords'];
-          $product_category=$_POST['product_category'];
-          $product_brands=$_POST['product_brands'];
-          $product_price=$_POST['product_price'];
-
-          // accessing images
-          $product_image1=$_POST['product_image1']['name'];
-          $product_image2=$_POST['product_image2']['name'];
-          $product_image3=$_POST['product_image3']['name'];
-          
+          $product_title = $_POST['product_title'];
+          $product_description = $_POST['description'];
+          $product_keywords = $_POST['product_keywords'];
+          $product_category = $_POST['product_category'];
+          $product_brands = $_POST['product_brands'];
+          $product_price = $_POST['product_price'];
+          $product_status = 'true';
 
           // accessing images
-          $temp_image1=$_POST['product_image1']['tmp_name'];
-          $temp_image2=$_POST['product_image2']['tmp_name'];
-          $temp_image3=$_POST['product_image3']['tmp_name'];
+          $product_image1 = $_FILES['product_image1']['name'];
+          $product_image2 = $_FILES['product_image2']['name'];
+          $product_image3 = $_FILES['product_image3']['name'];
+
+
+          // accessing images
+          $temp_image1 = $_FILES['product_image1']['tmp_name'];
+          $temp_image2 = $_FILES['product_image2']['tmp_name'];
+          $temp_image3 = $_FILES['product_image3']['tmp_name'];
 
           //checking empty condition
-          if($product_title=='' or $product_description=='' or $product_category=='' or $product_brands=='' or $product_price=='' or $product_keywords==''or $ $product_image1=='' or $product_image2=='' or  $product_image3=='' ){
-                    echo "<script>('please fill all the available fields')</script>";
+          if ($product_title == '' or $product_description == '' or $product_keywords == '' or $product_category == '' or $product_brands == '' or $product_price == '' or $product_keywords == '' or $product_image1 == '' or $product_image2 == '' or $product_image3 == '') {
+                    echo "<script>alert('please fill all the available fields')</script>";
                     exit();
-          }else{
-                    move_uploaded_file($temp_image1,"./product_images/$porduct_image1");
-                    move_uploaded_file($temp_image2,"./product_images/$porduct_image2");
-                    move_uploaded_file($temp_image3,"./product_images/$porduct_image3");
+          } else {
+                    move_uploaded_file($temp_image1, "./product_images/$product_image1");
+                    move_uploaded_file($temp_image2, "./product_images/$product_image2");
+                    move_uploaded_file($temp_image3, "./product_images/$product_image3");
 
                     //insert query
-                    $insert_products="insert into `product-table(Cat_ID,,brand_id,product_title,product_keywords,product_image1,product_image2,product_image3,,product_description,product_price,,,,date,status)
-                     values('$product_title','$description','$product_keywords','$product_category','$product_brands','$product_image1','$product_image2','$product_image3','$product_price')`";
+                    $insert_products = "insert into `product-table` (product_title,product_description,product_keywords,Cat_ID,brand_id,product_image1,product_image2,product_image3,product_price,date,status)
+                     values('$product_title','$product_description','$product_keywords','$product_category','$product_brands','$product_image1','$product_image2','$product_image3','$product_price','NOW()','$product_status')";
+                    $result_query = mysqli_query($con, $insert_products);
+                    if ($result_query) {
+                              echo "<script>alert('Successfully inserted the products'</script>";
 
-          
-          
+                    }
+
+
+
           }
 
-          
+
 
 }
 ?>
@@ -71,14 +77,14 @@ if(isset($_POST['insert_product'])){
                     <form action="" method="post" enctype="multipart/form-data">
                               <!-- title -->
                               <div class="form-outline mb-4 w-50 m-auto">
-                                        <label for="product_title" class="form-label">Product description</label>
+                                        <label for="product_title" class="form-label">Product title</label>
                                         <input type="text" name="product_title" id="product_title" class="form-control"
                                                   placeholder="Enter Product Here" autocomplete="off"
                                                   required="required">
                               </div>
                               <!-- description -->
                               <div class="form-outline mb-4 w-50 m-auto">
-                                        <label for="description" class="form-label">Product Title</label>
+                                        <label for="description" class="form-label">Product description</label>
                                         <input type="text" name="description" id="description" class="form-control"
                                                   placeholder="Enter Product description" autocomplete="off"
                                                   required="required">
@@ -95,11 +101,11 @@ if(isset($_POST['insert_product'])){
                                         <select name="product_category" id="" class="form-control mt-4">
                                                   <option value="">Select a Category</option>
                                                   <?php
-                                                  $select_query="Select * from `category`";
-                                                  $result_query=mysqli_query($con,$select_query);
-                                                  while($row=mysqli_fetch_assoc($result_query)){
-                                                            $category_title=$row['name'];
-                                                            $category_id=$row['Cat-ID'];
+                                                  $select_query = "Select * from `category`";
+                                                  $result_query = mysqli_query($con, $select_query);
+                                                  while ($row = mysqli_fetch_assoc($result_query)) {
+                                                            $category_title = $row['name'];
+                                                            $category_id = $row['Cat-ID'];
                                                             echo "<option value='$category_id'>$category_title</option>";
 
                                                   }
@@ -113,11 +119,11 @@ if(isset($_POST['insert_product'])){
                                         <select name="product_brands" id="" class="form-control mt-4">
                                                   <option value="">Select a brands</option>
                                                   <?php
-                                                  $select_query="Select * from `brand`";
-                                                  $result_query=mysqli_query($con,$select_query);
-                                                  while($row=mysqli_fetch_assoc($result_query)){
-                                                            $brand_title=$row['brand_name'];
-                                                            $brand_id=$row['brand_id'];
+                                                  $select_query = "Select * from `brand`";
+                                                  $result_query = mysqli_query($con, $select_query);
+                                                  while ($row = mysqli_fetch_assoc($result_query)) {
+                                                            $brand_title = $row['brand_name'];
+                                                            $brand_id = $row['brand_id'];
                                                             echo "<option value='$brand_id'>$brand_title</option>";
 
                                                   }
@@ -142,15 +148,19 @@ if(isset($_POST['insert_product'])){
                               <div class="form-outline mb-4 w-50 m-auto">
                                         <label for="product_image3" class="form-label">Product image 3</label>
                                         <input type="file" name="product_image3" id="product_image3"
-                                                  class="form-control" required="required"></div>
-                              <!-- price -->
-                              <div class="form-outline mb-4 w-50 m-auto">
-                                        <label for="product_price" class="form-label">Product price</label>
-                                        <input type="text" name="product_price" id="product_price" class="form-control" placeholder="Enter Product price"autocomplete="off" required="required">
+                                                  class="form-control" required="required">
                               </div>
                               <!-- price -->
                               <div class="form-outline mb-4 w-50 m-auto">
-                                        <input type="submit" name="insert_product" class="btn btn-info mb-3 px-3 mt-3" value="Insert Products">
+                                        <label for="product_price" class="form-label">Product price</label>
+                                        <input type="text" name="product_price" id="product_price" class="form-control"
+                                                  placeholder="Enter Product price" autocomplete="off"
+                                                  required="required">
+                              </div>
+                              <!-- price -->
+                              <div class="form-outline mb-4 w-50 m-auto">
+                                        <input type="submit" name="insert_product" class="btn btn-info mb-3 px-3 mt-3"
+                                                  value="Insert Products">
                               </div>
 
                     </form>

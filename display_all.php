@@ -67,10 +67,12 @@ include('functions/common_function.php');
 							<a class="nav-link" href="#">Total Price</a>
 						</li>
 					</ul>
-					<form class="d-flex" action="search_product.php" method="get">
+					<form class="d-flex">
 						<input class="form-control mr-sm-2" type="search"
-							placeholder="Search" aria-label="Search" name="search_data">
-							<input type="submit" value="search" class="btn btn-outline-light" name="search_data_product">
+							placeholder="Search" aria-label="Search">
+						<!-- <button class="btn btn-outline-light"
+							type="submit">Search</button> -->
+							<input type="submit" value="search" class="btn btn-outline-light">
 					</form>
 				</div>
 			</div>
@@ -98,7 +100,7 @@ include('functions/common_function.php');
 				<div class="row">
 					<!-- fetching products -->
 					<?php
-					getproducts();
+					get_all_products();
 					get_unique_categories();
 					get_unique_brands();
 					?>
@@ -136,10 +138,9 @@ include('functions/common_function.php');
 			</div>
 		</div>
 		<!-- last child -->
-		<!-- include footer	 -->
-		<?php 
-		include("./includes/footer.php")
-		?>
+		<div class="bg-info p-3 text-center col-md-12">
+			<p>all rights reserved @- Designed by Ali</p>
+		</div>
 	</div>
 
 
